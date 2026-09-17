@@ -1,0 +1,70 @@
+<?php
+use App\Core\View;
+
+View::startSection('header');
+?>
+<h2 class="font-semibold text-xl text-gray-800 leading-tight">Nuevo Usuario</h2>
+<?php View::endSection(); ?>
+
+<div class="max-w-2xl">
+    <div class="mb-4">
+        <a href="<?= url('/users') ?>" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition">
+            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Volver
+        </a>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+        <form method="POST" action="<?= url('/users') ?>" class="p-6 space-y-6">
+            <?= csrf_field() ?>
+
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
+                <input type="text" id="name" name="name" value="<?= e(old('name')) ?>" required autofocus autocomplete="name"
+                       class="mt-1 block w-full rounded-md text-sm border <?= has_error('name') ? 'border-red-500' : 'border-gray-300' ?> focus:border-primary-500 focus:ring-primary-500">
+                <?php if (has_error('name')): ?><p class="mt-2 text-sm text-red-600"><?= e(field_error('name')) ?></p><?php endif; ?>
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                <input type="email" id="email" name="email" value="<?= e(old('email')) ?>" required autocomplete="username"
+                       class="mt-1 block w-full rounded-md text-sm border <?= has_error('email') ? 'border-red-500' : 'border-gray-300' ?> focus:border-primary-500 focus:ring-primary-500">
+                <?php if (has_error('email')): ?><p class="mt-2 text-sm text-red-600"><?= e(field_error('email')) ?></p><?php endif; ?>
+            </div>
+
+            <div>
+                <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rol</label>
+                <select id="role" name="role"
+                        class="mt-1 block w-full rounded-md text-sm border <?= has_error('role') ? 'border-red-500' : 'border-gray-300' ?> focus:border-primary-500 focus:ring-primary-500">
+                    <option value="seller" <?= old('role') === 'seller' ? 'selected' : '' ?>>Vendedor</option>
+                    <option value="admin" <?= old('role') === 'admin' ? 'selected' : '' ?>>Admin</option>
+                </select>
+                <?php if (has_error('role')): ?><p class="mt-2 text-sm text-red-600"><?= e(field_error('role')) ?></p><?php endif; ?>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Contraseña</label>
+                <input type="password" id="password" name="password" required autocomplete="new-password"
+                       class="mt-1 block w-full rounded-md text-sm border <?= has_error('password') ? 'border-red-500' : 'border-gray-300' ?> focus:border-primary-500 focus:ring-primary-500">
+                <?php if (has_error('password')): ?><p class="mt-2 text-sm text-red-600"><?= e(field_error('password')) ?></p><?php endif; ?>
+            </div>
+
+            <div>
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirmar Contraseña</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" required autocomplete="new-password"
+                       class="mt-1 block w-full rounded-md text-sm border border-gray-300 focus:border-primary-500 focus:ring-primary-500">
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <a href="<?= url('/users') ?>" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-sm text-gray-700 hover:bg-gray-50 transition">
+                    Cancelar
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 bg-primary-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-primary-700 transition">
+                    Crear Usuario
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
