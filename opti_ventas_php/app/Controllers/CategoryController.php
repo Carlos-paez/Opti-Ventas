@@ -37,7 +37,7 @@ final class CategoryController
     {
         $data = [
             'name' => trim((string) input('name')),
-            'description' => trim((string) input('description')),
+            'description' => nullable_string(input('description')),
             'color' => trim((string) input('color', '#6366f1')),
         ];
 
@@ -53,7 +53,7 @@ final class CategoryController
             redirect('/categories/create');
         }
 
-        $data['slug'] = slugify($data['name']);
+        $data['slug'] = $this->generateUniqueSlug($data['name']);
         Category::create($data);
 
         flash('success', 'Categoría creada correctamente.');
@@ -83,7 +83,7 @@ final class CategoryController
 
         $data = [
             'name' => trim((string) input('name')),
-            'description' => trim((string) input('description')),
+            'description' => nullable_string(input('description')),
             'color' => trim((string) input('color', '#6366f1')),
         ];
 
@@ -99,11 +99,32 @@ final class CategoryController
             redirect('/categories/' . $id . '/edit');
         }
 
-        $data['slug'] = slugify($data['name']);
+        $data['slug'] = $this->generateUniqueSlug($data['name'], $id);
         Category::update($id, $data);
 
         flash('success', 'Categoría actualizada correctamente.');
         redirect('/categories');
+    }
+
+    private function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $baseSlug = slugify($name);
+        if ($baseSlug === '') {
+            $baseSlug = 'categoria';
+        }
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (true) {
+            $existing = Category::findBySlug($slug);
+            if ($existing === null || ($ignoreId !== null && (int) $existing['id'] === $ignoreId)) {
+                break;
+            }
+            $slug = "{$baseSlug}-{$counter}";
+            $counter++;
+        }
+
+        return $slug;
     }
 
     public function destroy(int $id): void

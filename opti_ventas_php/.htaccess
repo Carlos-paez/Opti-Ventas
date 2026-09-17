@@ -1,6 +1,26 @@
-RewriteEngine On
-DirectoryIndex public/index.php
+# Opti Ventas — Configuración de Apache (Laragon)
+# El documento raíz es la carpeta del proyecto; index.php es el front controller.
 
+Options -Indexes
+DirectoryIndex index.php
+
+# Bloquear acceso web a archivos sensibles (dotfiles, .env, SQL, docs, etc.)
+<FilesMatch "^\.|\.(env|sql|lock|md|log|ini|json|xml|example)$">
+    Require all denied
+</FilesMatch>
+
+# El instalador es solo de uso CLI
+<Files "setup.php">
+    Require all denied
+</Files>
+
+RewriteEngine On
+
+# Bloquear acceso directo al código fuente y metadatos
+RewriteRule ^(app|config|database|views|\.git|\.kiro)(/|$) - [F]
+
+# Servir archivos existentes (imágenes de storage/, etc.) de forma directa;
+# todo lo demás se enruta por el front controller.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ public/index.php [L]
+RewriteRule ^ index.php [QSA,L]

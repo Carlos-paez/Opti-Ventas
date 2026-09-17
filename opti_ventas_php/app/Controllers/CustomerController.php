@@ -35,9 +35,9 @@ final class CustomerController
     {
         $data = [
             'name' => trim((string) input('name')),
-            'phone' => trim((string) input('phone')),
-            'email' => trim((string) input('email')),
-            'address' => trim((string) input('address')),
+            'phone' => nullable_string(input('phone')),
+            'email' => nullable_string(input('email')),
+            'address' => nullable_string(input('address')),
         ];
 
         $errors = Validator::validate($data, [
@@ -82,9 +82,9 @@ final class CustomerController
 
         $data = [
             'name' => trim((string) input('name')),
-            'phone' => trim((string) input('phone')),
-            'email' => trim((string) input('email')),
-            'address' => trim((string) input('address')),
+            'phone' => nullable_string(input('phone')),
+            'email' => nullable_string(input('email')),
+            'address' => nullable_string(input('address')),
         ];
 
         $errors = Validator::validate($data, [

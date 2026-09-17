@@ -30,7 +30,7 @@ final class PosController
     public function index(): void
     {
         $page = max(1, (int) query('page', 1));
-        $perPage = 12;
+        $perPage = 100;
 
         $categoryId = query('category_id');
         $categoryId = $categoryId !== null && $categoryId !== '' ? (int) $categoryId : null;

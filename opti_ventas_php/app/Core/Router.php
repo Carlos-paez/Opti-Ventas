@@ -25,7 +25,22 @@ final class Router
 
     public function post(string $pattern, array|callable $handler, array $middleware = []): void
     {
-        $this->add(['POST', 'PUT', 'PATCH', 'DELETE'], $pattern, $handler, $middleware);
+        $this->add(['POST'], $pattern, $handler, $middleware);
+    }
+
+    public function put(string $pattern, array|callable $handler, array $middleware = []): void
+    {
+        $this->add(['PUT', 'PATCH'], $pattern, $handler, $middleware);
+    }
+
+    public function delete(string $pattern, array|callable $handler, array $middleware = []): void
+    {
+        $this->add(['DELETE'], $pattern, $handler, $middleware);
+    }
+
+    public function match(array $methods, string $pattern, array|callable $handler, array $middleware = []): void
+    {
+        $this->add($methods, $pattern, $handler, $middleware);
     }
 
     public function middle($group, callable $register): void

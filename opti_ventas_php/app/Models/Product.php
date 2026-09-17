@@ -23,15 +23,15 @@ final class Product
             [
                 $data['name'],
                 $data['slug'],
-                $data['sku'] ?? null,
-                $data['barcode'] ?? null,
-                $data['category_id'] ?? null,
-                $data['description'] ?? null,
+                nullable_string($data['sku'] ?? null),
+                nullable_string($data['barcode'] ?? null),
+                !empty($data['category_id']) ? (int) $data['category_id'] : null,
+                nullable_string($data['description'] ?? null),
                 $data['price'],
                 $data['cost'] ?? 0,
                 $data['stock'] ?? 0,
                 $data['stock_min'] ?? 5,
-                $data['photo_path'] ?? null,
+                nullable_string($data['photo_path'] ?? null),
                 (int) ($data['is_active'] ?? 1),
                 now(),
                 now(),
@@ -45,12 +45,20 @@ final class Product
         $fields = [];
         $params = [];
 
+        $nullableColumns = ['sku', 'barcode', 'description', 'photo_path'];
+
         foreach (['name', 'slug', 'sku', 'barcode', 'category_id', 'description', 'price', 'cost', 'stock', 'stock_min', 'photo_path', 'is_active', 'updated_at'] as $column) {
             if (!array_key_exists($column, $data)) {
                 continue;
             }
+            $val = $data[$column];
+            if (in_array($column, $nullableColumns, true)) {
+                $val = nullable_string($val);
+            } elseif ($column === 'category_id') {
+                $val = !empty($val) ? (int) $val : null;
+            }
             $fields[] = "{$column} = ?";
-            $params[] = $data[$column];
+            $params[] = $val;
         }
 
         if (!$fields) {

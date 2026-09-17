@@ -13,7 +13,11 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-$config = require __DIR__ . '/config.php';
+require __DIR__ . '/app/Autoloader.php';
+App\Autoloader::register();
+App\Core\Env::load(__DIR__ . '/.env');
+
+$config = ['db' => require __DIR__ . '/config/database.php'] + ['debug' => true];
 
 echo "=== Opti Ventas - Instalador ===\n\n";
 
@@ -47,8 +51,9 @@ $hasUsers = (int) $server->query('SELECT COUNT(*) FROM users')->fetchColumn();
 
 if ($hasUsers > 0) {
     echo "La base de datos ya contiene datos. No se ejecutó el seed.\n\n";
-    echo "Listo. Inicia el servidor con:\n";
-    echo "  cd opti_ventas_php\n  php -S localhost:8000 -t public\n\n";
+    echo "Listo. Abre el proyecto en Laragon (http://opti_ventas_php.test/)\n";
+    echo "o inicia el servidor embebido con:\n";
+    echo "  php -S localhost:8000 index.php\n\n";
 
     exit(0);
 }
@@ -131,8 +136,10 @@ echo "\n=== Instalación completada ===\n\n";
 echo "Usuarios:\n";
 echo "  Admin:  admin@optiventas.com / password\n";
 echo "  Venta:   vendedor@optiventas.com / password\n\n";
-echo "Para iniciar el servidor:\n";
-echo "  php -S localhost:8000 -t public\n\n";
+echo "Con Laragon, abre directamente el host del proyecto:\n";
+echo "  http://opti_ventas_php.test/\n\n";
+echo "O inicia el servidor embebido de PHP:\n";
+echo "  php -S localhost:8000 index.php\n\n";
 
 /**
  * Convierte texto a slug (misma lógica que la app original).

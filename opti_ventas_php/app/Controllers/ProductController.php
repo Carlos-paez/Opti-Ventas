@@ -46,10 +46,10 @@ final class ProductController
     {
         $data = [
             'name' => trim((string) input('name')),
-            'sku' => trim((string) input('sku')),
-            'barcode' => trim((string) input('barcode')),
+            'sku' => nullable_string(input('sku')),
+            'barcode' => nullable_string(input('barcode')),
             'category_id' => input('category_id', '') !== '' ? (int) input('category_id') : null,
-            'description' => trim((string) input('description')),
+            'description' => nullable_string(input('description')),
             'price' => input('price'),
             'cost' => input('cost', '') !== '' ? (float) input('cost') : 0,
             'stock' => (int) input('stock', 0),
@@ -123,10 +123,10 @@ final class ProductController
 
         $data = [
             'name' => trim((string) input('name')),
-            'sku' => trim((string) input('sku')),
-            'barcode' => trim((string) input('barcode')),
+            'sku' => nullable_string(input('sku')),
+            'barcode' => nullable_string(input('barcode')),
             'category_id' => input('category_id', '') !== '' ? (int) input('category_id') : null,
-            'description' => trim((string) input('description')),
+            'description' => nullable_string(input('description')),
             'price' => input('price'),
             'cost' => input('cost', '') !== '' ? (float) input('cost') : 0,
             'stock' => (int) input('stock', 0),

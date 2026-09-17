@@ -20,9 +20,9 @@ final class Customer
              VALUES (?, ?, ?, ?, ?, ?)',
             [
                 $data['name'],
-                $data['phone'] ?? null,
-                $data['email'] ?? null,
-                $data['address'] ?? null,
+                nullable_string($data['phone'] ?? null),
+                nullable_string($data['email'] ?? null),
+                nullable_string($data['address'] ?? null),
                 now(),
                 now(),
             ]
@@ -35,9 +35,9 @@ final class Customer
             'UPDATE customers SET name = ?, phone = ?, email = ?, address = ?, updated_at = ? WHERE id = ?',
             [
                 $data['name'],
-                $data['phone'] ?? null,
-                $data['email'] ?? null,
-                $data['address'] ?? null,
+                nullable_string($data['phone'] ?? null),
+                nullable_string($data['email'] ?? null),
+                nullable_string($data['address'] ?? null),
                 now(),
                 $id,
             ]
@@ -71,7 +71,8 @@ final class Customer
 
         $all = array_merge($params, [$perPage, ($page - 1) * $perPage]);
         $items = Database::fetchAll(
-            "SELECT * FROM customers {$where} ORDER BY id DESC LIMIT ? OFFSET ?",
+            "SELECT customers.*, (SELECT COUNT(*) FROM sales s WHERE s.customer_id = customers.id) AS sales_count
+             FROM customers {$where} ORDER BY id DESC LIMIT ? OFFSET ?",
             $all
         );
 

@@ -183,6 +183,39 @@ final class Sale
             $topParams
         );
 
+        $sConditions = ['s.status = ?'];
+        $sParams = [self::STATUS_COMPLETED];
+
+        if ($from !== null) {
+            $sConditions[] = 's.created_at >= ?';
+            $sParams[] = $from . ' 00:00:00';
+        }
+
+        if ($to !== null) {
+            $sConditions[] = 's.created_at <= ?';
+            $sParams[] = $to . ' 23:59:59';
+        }
+
+        $sWhere = 'WHERE ' . implode(' AND ', $sConditions);
+
+        $costRow = Database::fetch(
+            "SELECT COALESCE(SUM(si.quantity * COALESCE(p.cost, 0)), 0) AS total_cost
+             FROM sales s
+             JOIN sale_items si ON si.sale_id = s.id
+             LEFT JOIN products p ON p.id = si.product_id
+             {$sWhere}",
+            $sParams
+        );
+        $totalCost = (float) ($costRow['total_cost'] ?? 0);
+
+        $salesTotals = Database::fetch(
+            "SELECT COALESCE(SUM(s.subtotal), 0) AS subtotal, COALESCE(SUM(s.discount), 0) AS discount
+             FROM sales s {$sWhere}",
+            $sParams
+        );
+        $netSales = (float) ($salesTotals['subtotal'] ?? 0) - (float) ($salesTotals['discount'] ?? 0);
+        $profit = round($netSales - $totalCost, 2);
+
         return [
             'from' => $from,
             'to' => $to,
@@ -190,7 +223,7 @@ final class Sale
             'revenue' => round($revenue, 2),
             'totalRevenue' => round($revenue, 2),
             'avgTicket' => $count > 0 ? round($revenue / $count, 2) : 0,
-            'totalProfit' => 0,
+            'totalProfit' => $profit,
             'top_products' => $top,
         ];
     }

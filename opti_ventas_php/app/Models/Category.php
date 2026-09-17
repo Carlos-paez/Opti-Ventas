@@ -26,7 +26,7 @@ final class Category
             [
                 $data['name'],
                 $data['slug'],
-                $data['description'] ?? null,
+                nullable_string($data['description'] ?? null),
                 $data['color'] ?? '#6366f1',
                 now(),
                 now(),
@@ -41,7 +41,7 @@ final class Category
             [
                 $data['name'],
                 $data['slug'],
-                $data['description'] ?? null,
+                nullable_string($data['description'] ?? null),
                 $data['color'] ?? '#6366f1',
                 now(),
                 $id,

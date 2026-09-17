@@ -179,14 +179,13 @@ final class Validator
             return null;
         }
 
-        [$table, $column] = array_pad(explode(',', $param), 2, 'id');
-        $ignore = null;
+        $parts = explode(',', $param);
+        $table = preg_replace('/[^a-zA-Z0-9_]/', '', $parts[0] ?? '');
+        $column = preg_replace('/[^a-zA-Z0-9_]/', '', $parts[1] ?? 'id');
+        $ignore = $parts[2] ?? null;
 
-        if (count(explode(',', $param)) >= 3) {
-            $parts = explode(',', $param);
-            $table = $parts[0];
-            $column = $parts[1];
-            $ignore = $parts[2];
+        if ($table === '' || $column === '') {
+            return null;
         }
 
         $params = [$value];
@@ -208,7 +207,14 @@ final class Validator
             return null;
         }
 
-        [$table, $column] = array_pad(explode(',', $param), 2, 'id');
+        $parts = explode(',', $param);
+        $table = preg_replace('/[^a-zA-Z0-9_]/', '', $parts[0] ?? '');
+        $column = preg_replace('/[^a-zA-Z0-9_]/', '', $parts[1] ?? 'id');
+
+        if ($table === '' || $column === '') {
+            return null;
+        }
+
         $exists = Database::value("SELECT COUNT(*) FROM `{$table}` WHERE `{$column}` = ?", [$value]);
 
         return $exists > 0 ? null : "El campo {$label} seleccionado no existe.";
