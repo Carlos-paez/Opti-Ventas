@@ -1,7 +1,7 @@
-# Opti Ventas — Configuración de Apache (Laragon)
-# El documento raíz es la carpeta del proyecto; index.php es el front controller.
+# Opti Ventas — Configuración de Apache (Laravel-like front controller)
+# Compatible con Laragon, InfinityFree, cPanel y hosts con mod_rewrite disponible.
 
-Options -Indexes
+Options -Indexes +FollowSymLinks
 DirectoryIndex index.php
 
 # Bloquear acceso web a archivos sensibles (dotfiles, .env, SQL, docs, etc.)
@@ -15,12 +15,16 @@ DirectoryIndex index.php
 </Files>
 
 RewriteEngine On
+RewriteBase /
 
-# Bloquear acceso directo al código fuente y metadatos
-RewriteRule ^(app|config|database|views|\.git|\.kiro)(/|$) - [F]
+# Bloquear acceso directo al código fuente y metadatos internos
+RewriteRule ^(app|config|database|views|\.git|\.kiro)(/|$) - [F,L]
 
-# Servir archivos existentes (imágenes de storage/, etc.) de forma directa;
-# todo lo demás se enruta por el front controller.
+# Asegura que cualquier ruta inexistente o no estática vuelva a index.php
+# (útil en InfinityFree cuando no se recibe el rewrite de forma puntual)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
+
+# Fallback general para hosts que no ejecutan bien RewriteRule en rutas virtuales
+FallbackResource /index.php

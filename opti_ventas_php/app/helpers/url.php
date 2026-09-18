@@ -25,12 +25,12 @@ function scheme(): string
 
 function host(): string
 {
-    return (string) ($_SERVER['HTTP_HOST'] ?? 'localhost');
+    return (string) ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost');
 }
 
 function app_script_dir(): string
 {
-    $script = (string) ($_SERVER['SCRIPT_NAME'] ?? '/index.php');
+    $script = (string) ($_SERVER['SCRIPT_NAME'] ?? $_SERVER['PHP_SELF'] ?? '/index.php');
     $dir = str_replace('\\', '/', dirname($script));
 
     if ($dir === '' || $dir === '.' || $dir === '/') {

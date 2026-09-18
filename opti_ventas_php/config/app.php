@@ -7,7 +7,8 @@ return [
     'env' => env('APP_ENV', 'production'),
     'debug' => (bool) env('APP_DEBUG', false),
 
-    // Déjalo vacío para detectar automáticamente el host
-    // (recomendado con Laragon: http://opti_ventas_php.test/).
+    // Si está vacío, se detecta automáticamente desde el dominio actual.
+    // En InfinityFree suele ser algo como https://tu-dominio.com o
+    // https://tu-dominio.com/subdirectorio si la app va en una carpeta.
     'url' => env('APP_URL', ''),
 ];

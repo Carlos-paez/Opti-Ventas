@@ -44,7 +44,7 @@ function json_input(): array
 
 function request_path(): string
 {
-    $uri = $_SERVER['REQUEST_URI'] ?? '/';
+    $uri = $_SERVER['REQUEST_URI'] ?? $_SERVER['ORIG_PATH_INFO'] ?? $_SERVER['PATH_INFO'] ?? '/';
     $path = parse_url($uri, PHP_URL_PATH) ?: '/';
     $path = rtrim($path, '/') ?: '/';
 
