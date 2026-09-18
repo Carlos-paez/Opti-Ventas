@@ -30,37 +30,37 @@ View::startSection('header');
 <?php View::endSection(); ?>
 
 <div class="max-w-5xl space-y-6">
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700">
         <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Información de la Venta</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Información de la Venta</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div>
-                    <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</dt>
-                    <dd class="mt-1 text-sm text-gray-900 font-medium">#<?= e($sale['id']) ?></dd>
+                    <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white font-medium">#<?= e($sale['id']) ?></dd>
                 </div>
                 <div>
-                    <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Fecha</dt>
-                    <dd class="mt-1 text-sm text-gray-900"><?= e(date('d/m/Y H:i:s', strtotime((string) $sale['created_at']))) ?></dd>
+                    <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Fecha</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white"><?= e(date('d/m/Y H:i:s', strtotime((string) $sale['created_at']))) ?></dd>
                 </div>
                 <div>
-                    <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Vendedor</dt>
-                    <dd class="mt-1 text-sm text-gray-900"><?= e($sale['user_name'] ?? '—') ?></dd>
+                    <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Vendedor</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white"><?= e($sale['user_name'] ?? '—') ?></dd>
                 </div>
                 <div>
-                    <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Cliente</dt>
-                    <dd class="mt-1 text-sm text-gray-900"><?= e($sale['customer_name'] ?? 'Público general') ?></dd>
+                    <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Cliente</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white"><?= e($sale['customer_name'] ?? 'Público general') ?></dd>
                 </div>
                 <div>
-                    <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Método de Pago</dt>
-                    <dd class="mt-1 text-sm text-gray-900 capitalize"><?= e($sale['payment_method']) ?></dd>
+                    <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Método de Pago</dt>
+                    <dd class="mt-1 text-sm text-gray-900 dark:text-white capitalize"><?= e($sale['payment_method']) ?></dd>
                 </div>
                 <div>
-                    <dt class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Estado</dt>
+                    <dt class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Estado</dt>
                     <dd class="mt-1">
                         <?php if ($sale['status'] === 'completed'): ?>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Completada</span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300">Completada</span>
                         <?php else: ?>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 line-through">Anulada</span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 line-through">Anulada</span>
                         <?php endif; ?>
                     </dd>
                 </div>
@@ -68,26 +68,26 @@ View::startSection('header');
         </div>
     </div>
 
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700">
         <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Productos</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Productos</h3>
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-700/80">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Producto</th>
-                            <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Cantidad</th>
-                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Precio Unitario</th>
-                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Subtotal</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Producto</th>
+                            <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Cantidad</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Precio Unitario</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Subtotal</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         <?php foreach ($sale['items'] as $item): ?>
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= e($item['product_name'] ?? 'Producto eliminado') ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 text-center"><?= e($item['quantity']) ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 text-right"><?= e(money((float) $item['unit_price'])) ?></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 text-right"><?= e(money((float) ($item['line_total'] ?? $item['quantity'] * $item['unit_price']))) ?></td>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/70 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white"><?= e($item['product_name'] ?? 'Producto eliminado') ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 text-center"><?= e($item['quantity']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300 text-right"><?= e(money((float) $item['unit_price'])) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-white text-right"><?= e(money((float) ($item['line_total'] ?? $item['quantity'] * $item['unit_price']))) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -96,22 +96,22 @@ View::startSection('header');
         </div>
     </div>
 
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700">
         <div class="p-6">
             <div class="max-w-xs ml-auto space-y-2">
-                <div class="flex justify-between text-sm text-gray-600">
+                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                     <span>Subtotal</span>
                     <span><?= e(money((float) $sale['subtotal'])) ?></span>
                 </div>
-                <div class="flex justify-between text-sm text-gray-600">
+                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                     <span>Descuento</span>
                     <span class="text-red-500">-<?= e(money((float) $sale['discount'])) ?></span>
                 </div>
-                <div class="flex justify-between text-sm text-gray-600">
+                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                     <span>IVA</span>
                     <span><?= e(money((float) $sale['tax'])) ?></span>
                 </div>
-                <div class="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-gray-200">
+                <div class="flex justify-between text-lg font-bold text-gray-900 dark:text-white pt-2 border-t border-gray-200 dark:border-gray-700">
                     <span>Total</span>
                     <span><?= e(money((float) $sale['total'])) ?></span>
                 </div>
@@ -120,7 +120,7 @@ View::startSection('header');
     </div>
 
     <div class="flex justify-start">
-        <a href="<?= url('/sales') ?>" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors">
+        <a href="<?= url('/sales') ?>" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white font-medium transition-colors">
             <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>

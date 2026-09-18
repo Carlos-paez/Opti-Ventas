@@ -47,13 +47,34 @@ final class CustomerController
             'address' => 'nullable|string',
         ]);
 
+        $acceptsJson = (isset($_SERVER['HTTP_ACCEPT']) && str_contains(strtolower((string) $_SERVER['HTTP_ACCEPT']), 'application/json'))
+            || (($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest');
+
         if ($errors) {
+            if ($acceptsJson) {
+                json_response(['success' => false, 'message' => 'No se pudo crear el cliente.', 'errors' => $errors], 422);
+            }
+
             flash_errors($errors);
             old_input($data);
             redirect('/customers/create');
         }
 
-        Customer::create($data);
+        $id = Customer::create($data);
+
+        if ($acceptsJson) {
+            json_response([
+                'success' => true,
+                'message' => 'Cliente creado correctamente.',
+                'customer' => [
+                    'id' => $id,
+                    'name' => $data['name'],
+                    'phone' => $data['phone'],
+                    'email' => $data['email'],
+                    'address' => $data['address'],
+                ],
+            ], 201);
+        }
 
         flash('success', 'Cliente creado correctamente.');
         redirect('/customers');

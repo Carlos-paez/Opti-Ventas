@@ -91,7 +91,75 @@ function navIcon(string $key): string
         html { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        body {
+            background-color: #f3f4f6;
+            color: #111827;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        body.dark-mode {
+            background-color: #111827 !important;
+            color: #f3f4f6 !important;
+        }
+
+        body.dark-mode .bg-white,
+        body.dark-mode .bg-gray-50,
+        body.dark-mode .bg-gray-100,
+        body.dark-mode .bg-gray-200,
+        body.dark-mode .bg-gray-800,
+        body.dark-mode .bg-gray-700,
+        body.dark-mode .bg-primary-50,
+        body.dark-mode .bg-primary-100,
+        body.dark-mode .bg-indigo-50 {
+            background-color: #1f2937 !important;
+        }
+
+        body.dark-mode .text-gray-900,
+        body.dark-mode .text-gray-800,
+        body.dark-mode .text-gray-700,
+        body.dark-mode .text-gray-600,
+        body.dark-mode .text-gray-500,
+        body.dark-mode .text-gray-400,
+        body.dark-mode .text-gray-300,
+        body.dark-mode .text-gray-200,
+        body.dark-mode .text-gray-100 {
+            color: #f3f4f6 !important;
+        }
+
+        body.dark-mode .border-gray-200,
+        body.dark-mode .border-gray-300,
+        body.dark-mode .border-gray-600,
+        body.dark-mode .border-gray-700,
+        body.dark-mode .border-indigo-200 {
+            border-color: #374151 !important;
+        }
+
+        body.dark-mode input,
+        body.dark-mode textarea,
+        body.dark-mode select,
+        body.dark-mode .rounded-lg,
+        body.dark-mode .rounded-xl,
+        body.dark-mode .rounded-md {
+            background-color: #1f2937 !important;
+            color: #f9fafb !important;
+            border-color: #4b5563 !important;
+        }
+
+        body.dark-mode button:not(.bg-indigo-600):not(.bg-primary-600):not(.bg-primary-700):not(.bg-primary-500) {
+            background-color: #1f2937 !important;
+            color: #f9fafb !important;
+            border-color: #4b5563 !important;
+        }
+
+        body.dark-mode .shadow-sm,
+        body.dark-mode .shadow-md,
+        body.dark-mode .shadow-lg,
+        body.dark-mode .shadow-xl {
+            box-shadow: none !important;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body class="h-full font-sans antialiased bg-gray-50 dark:bg-gray-900">
     <div class="min-h-full">
@@ -132,6 +200,11 @@ function navIcon(string $key): string
                             <p class="text-sm font-medium text-gray-900 dark:text-white truncate"><?= e((string) ($user['name'] ?? '')) ?></p>
                             <p class="text-xs text-gray-500 dark:text-gray-400 truncate"><?= e(ucfirst((string) ($user['role'] ?? ''))) ?></p>
                         </div>
+                        <button type="button" id="themeToggle" aria-label="Cambiar tema" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            <svg id="themeToggleIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2m0 14v2m9-9h-2M5 12H3m12.95 6.95l-1.41-1.41M8.46 8.46L7.05 7.05m9.9 0l-1.41 1.41M8.46 15.54l-1.41 1.41M12 7a5 5 0 100 10 5 5 0 000-10z"/>
+                            </svg>
+                        </button>
                         <form method="POST" action="<?= url('/logout') ?>">
                             <?= csrf_field() ?>
                             <button type="submit" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -146,16 +219,24 @@ function navIcon(string $key): string
         </aside>
 
         <div class="lg:pl-64">
-            <div class="sticky top-0 z-30 flex items-center h-16 px-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 lg:hidden">
-                <button onclick="toggleSidebar()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            <div class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 lg:hidden">
+                <div class="flex items-center">
+                    <button onclick="toggleSidebar()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div class="flex items-center gap-2 ml-3">
+                        <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-primary-600 text-white font-bold text-xs">OV</div>
+                        <span class="font-bold text-gray-900 dark:text-white">Opti Ventas</span>
+                    </div>
+                </div>
+
+                <button type="button" id="mobileThemeToggle" aria-label="Cambiar tema" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2m0 14v2m9-9h-2M5 12H3m12.95 6.95l-1.41-1.41M8.46 8.46L7.05 7.05m9.9 0l-1.41 1.41M8.46 15.54l-1.41 1.41M12 7a5 5 0 100 10 5 5 0 000-10z"/>
                     </svg>
                 </button>
-                <div class="flex items-center gap-2 ml-3">
-                    <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-primary-600 text-white font-bold text-xs">OV</div>
-                    <span class="font-bold text-gray-900 dark:text-white">Opti Ventas</span>
-                </div>
             </div>
 
             <?php if (View::hasSection('header')): ?>
@@ -173,12 +254,41 @@ function navIcon(string $key): string
     </div>
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
+        $(function () {
+            const $themeToggleButtons = $('#themeToggle, #mobileThemeToggle');
+
+            function applyTheme(isDark) {
+                $('html, body').toggleClass('dark', isDark);
+                $('body').toggleClass('dark-mode', isDark);
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+                const iconPaths = {
+                    dark: 'M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z',
+                    light: 'M12 3v2m0 14v2m9-9h-2M5 12H3m12.95 6.95l-1.41-1.41M8.46 8.46L7.05 7.05m9.9 0l-1.41 1.41M8.46 15.54l-1.41 1.41M12 7a5 5 0 100 10 5 5 0 000-10z',
+                };
+
+                $themeToggleButtons.each(function () {
+                    const $icon = $(this).find('svg');
+                    if ($icon.length) {
+                        $icon.attr('d', isDark ? iconPaths.dark : iconPaths.light);
+                    }
+                });
+            }
+
+            window.toggleSidebar = function () {
+                $('#sidebar').toggleClass('-translate-x-full');
+                $('#sidebar-overlay').toggleClass('hidden');
+            };
+
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(savedTheme ? savedTheme === 'dark' : prefersDark);
+
+            $themeToggleButtons.on('click', function () {
+                const isDark = !$('html').hasClass('dark');
+                applyTheme(isDark);
+            });
+        });
     </script>
 
     <?php View::yieldSection('scripts'); ?>
