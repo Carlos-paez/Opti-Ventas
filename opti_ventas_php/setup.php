@@ -17,6 +17,8 @@ require __DIR__ . '/app/Autoloader.php';
 App\Autoloader::register();
 App\Core\Env::load(__DIR__ . '/.env');
 
+require __DIR__ . '/app/helpers/config.php';
+
 $config = ['db' => require __DIR__ . '/config/database.php'] + ['debug' => true];
 
 echo "=== Opti Ventas - Instalador ===\n\n";
